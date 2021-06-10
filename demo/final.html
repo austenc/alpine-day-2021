@@ -29,7 +29,7 @@
                 Are you super stoked for Alpine 3?
                 <div class="mt-20 flex justify-between">
                     <button @click="hide" type="button" class="btn-cancel">Cancel</button>
-                    <button onclick="alert('Wooohoo! Me too! 🎉🎉🎉🎉🎉🎉')" type="button" class="btn-yes">Heck Yes!</button>
+                    <button x-focus-first onclick="alert('Wooohoo! Me too! 🎉🎉🎉🎉🎉🎉')" type="button" class="btn-yes">Heck Yes!</button>
                 </div>
             </div>
         </div>
@@ -53,10 +53,20 @@
                 show() {
                     this.open = true
                     document.body.classList.add('overflow-hidden')
+                    this.setFocus()
                 },
                 hide() {
                     this.open = false
                     document.body.classList.remove('overflow-hidden')
+                    this.$nextTick(() => { this.$refs.trigger.focus() })
+                },
+                focusables() {
+                    return [...this.$refs.dialog.querySelectorAll('a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])')]
+                        .filter(el => !el.hasAttribute('disabled'))
+                },
+                setFocus() {
+                    let focusElement = this.$el.querySelector('[x-focus-first]') ?? this.focusables()[0]
+                    this.$nextTick(() => { focusElement.focus() })
                 },
                 overlay: {
                     ['x-show']() { return this.open },
