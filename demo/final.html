@@ -7,6 +7,7 @@
     <title>⛰ Alpine Day Rocks!</title>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wicg-inert@3.1.1/dist/inert.min.js" defer></script>
     <style type="postcss">
         .btn { @apply p-8 rounded-full bg-green-500 text-white focus:ring-8 focus:outline-none ring-red-500 font-medium transition hover:bg-green-700; }
         .btn-cancel { @apply px-4 py-2 font-medium transition text-gray-500 focus:ring-8 focus:outline-none ring-red-500 hover:text-gray-800 rounded; }
@@ -53,11 +54,13 @@
                 show() {
                     this.open = true
                     document.body.classList.add('overflow-hidden')
+                    this.toggleSiblingsInert(true)
                     this.setFocus()
                 },
                 hide() {
                     this.open = false
                     document.body.classList.remove('overflow-hidden')
+                    this.toggleSiblingsInert(false)
                     this.$nextTick(() => { this.$refs.trigger.focus() })
                 },
                 focusables() {
@@ -67,6 +70,17 @@
                 setFocus() {
                     let focusElement = this.$el.querySelector('[x-focus-first]') ?? this.focusables()[0]
                     this.$nextTick(() => { focusElement.focus() })
+                },
+                toggleSiblingsInert(toState) {
+                    // Walk up the DOM, toggle inert attribute the siblings at each level
+                    let el = this.$refs.dialog
+                    while (el = el.parentElement) {
+                        if (el === document.body || el.parentElement === null) continue
+
+                        [...el.parentElement.children].filter(sibling => sibling !== el).forEach(sibling => {
+                            sibling.inert = toState
+                        })
+                    }
                 },
                 overlay: {
                     ['x-show']() { return this.open },
