@@ -25,8 +25,8 @@
         <!-- Overlay -->
         <div x-cloak x-spread="overlay" class="overlay">
             <!-- Dialog -->
-            <div @click.away="hide" x-ref="dialog" class="dialog">
-                Are you super stoked for Alpine 3?
+            <div @click.away="hide" x-ref="dialog" class="dialog" role="dialog" aria-labelledby="the-label">
+                <div id="the-label">Are you super stoked for Alpine 3?</div>
                 <div class="mt-20 flex justify-between">
                     <button @click="hide" type="button" class="btn-cancel">Cancel</button>
                     <button x-focus-first onclick="alert('Wooohoo! Me too! 🎉🎉🎉🎉🎉🎉')" type="button" class="btn-yes">Heck Yes!</button>
