@@ -3,6 +3,7 @@
 
 This repository contains the slides and demos for my talk from Alpine Day 2021. Below, you'll find a description of the files it contains. To navigate through the slideshow, load the php file in a browser and use the arrow keys to move between slides.
 
+**If you check out the commit history you can replay the changes I made during the talk. Enjoy!**
 ---
 
 ### The Files
