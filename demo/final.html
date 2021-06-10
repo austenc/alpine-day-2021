@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⛰ Alpine Day Rocks!</title>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <style type="postcss">
+        .btn { @apply p-8 rounded-full bg-green-500 text-white focus:ring-8 focus:outline-none ring-red-500 font-medium transition hover:bg-green-700; }
+        .btn-cancel { @apply px-4 py-2 font-medium transition text-gray-500 focus:ring-8 focus:outline-none ring-red-500 hover:text-gray-800 rounded; }
+        .btn-yes { @apply px-4 py-2 font-medium transition text-white focus:ring-8 focus:outline-none ring-red-500 bg-green-500 hover:bg-green-700 rounded; }
+        .overlay { @apply fixed inset-0 flex items-center justify-center text-left bg-black bg-opacity-50; }
+        .dialog { @apply inline-block bg-white shadow-xl rounded-lg p-10 text-gray-700; }
+        [x-cloak] { @apply hidden; }
+    </style>
+</head>
+<body class="text-4xl text-center bg-gray-200">
+    <!-- The Alpine Component -->
+    <div x-data="{ open: false }" @keydown.window.escape="open = false">
+        <!-- Trigger -->
+        <button @click="open = true" x-ref="trigger" type="button" class="btn mt-40">Open Dialog</button>
+
+        <!-- Overlay -->
+        <div x-cloak
+            x-show="open"
+            x-ref="overlay"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="overlay"
+        >
+            <!-- Dialog -->
+            <div @click.away="open = false" x-ref="dialog" class="dialog">
+                Are you super stoked for Alpine 3?
+                <div class="mt-20 flex justify-between">
+                    <button @click="open = false" type="button" class="btn-cancel">Cancel</button>
+                    <button onclick="alert('Wooohoo! Me too! 🎉🎉🎉🎉🎉🎉')" type="button" class="btn-yes">Heck Yes!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scrolling content -->
+    <div class="pt-96 mt-96">
+        <div class="pt-96">
+            <div class="pt-96">
+                <div class="pt-96 p-12 text-center">
+                    Hello from the bottom of the page!
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
