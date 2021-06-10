@@ -18,27 +18,17 @@
 </head>
 <body class="text-4xl text-center bg-gray-200">
     <!-- The Alpine Component -->
-    <div x-data="{ open: false }" @keydown.window.escape="open = false">
+    <div x-data="modal()" @keydown.window.escape="hide">
         <!-- Trigger -->
-        <button @click="open = true" x-ref="trigger" type="button" class="btn mt-40">Open Dialog</button>
+        <button @click="show" x-ref="trigger" type="button" class="btn mt-40">Open Dialog</button>
 
         <!-- Overlay -->
-        <div x-cloak
-            x-show="open"
-            x-ref="overlay"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="overlay"
-        >
+        <div x-cloak x-spread="overlay" class="overlay">
             <!-- Dialog -->
-            <div @click.away="open = false" x-ref="dialog" class="dialog">
+            <div @click.away="hide" x-ref="dialog" class="dialog">
                 Are you super stoked for Alpine 3?
                 <div class="mt-20 flex justify-between">
-                    <button @click="open = false" type="button" class="btn-cancel">Cancel</button>
+                    <button @click="hide" type="button" class="btn-cancel">Cancel</button>
                     <button onclick="alert('Wooohoo! Me too! 🎉🎉🎉🎉🎉🎉')" type="button" class="btn-yes">Heck Yes!</button>
                 </div>
             </div>
@@ -55,5 +45,31 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function modal() {
+            return {
+                open: false,
+                show() {
+                    this.open = true
+                    document.body.classList.add('overflow-hidden')
+                },
+                hide() {
+                    this.open = false
+                    document.body.classList.remove('overflow-hidden')
+                },
+                overlay: {
+                    ['x-show']() { return this.open },
+                    ['x-bind:x-ref']() { return 'overlay' },
+                    ['x-transition:enter']() { return 'transition ease-out duration-300' },
+                    ['x-transition:enter-start']() { return 'opacity-0' },
+                    ['x-transition:enter-end']() { return 'opacity-100' },
+                    ['x-transition:leave']() { return 'transition ease-in duration-300' },
+                    ['x-transition:leave-start']() { return 'opacity-100' },
+                    ['x-transition:leave-end']() { return 'opacity-0' },
+                }
+            }
+        }
+    </script>
 </body>
 </html>
